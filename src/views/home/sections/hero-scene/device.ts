@@ -40,21 +40,21 @@ export interface SceneTier {
    */
   trailSamples: number;
   /**
-   * Whether the scanning wireframe is drawn. The helmet is 37.8k triangles,
-   * so its wireframe is 113k line segments per frame — over a helmet some
-   * 300px wide on a phone, most of them sub-pixel. That is the pathological
-   * case for a tile-based mobile GPU (binning dominates), for a wave that
-   * peaks at 9% opacity and reads as a grey shimmer at that size.
+   * Whether the scanning wireframe is drawn. The helmet is ~38k triangles,
+   * so its wireframe is ~114k line segments per frame — over a helmet some
+   * 300px wide on a phone, most of them sub-pixel, which is costly on a
+   * tile-based mobile GPU. It was off on phones for that; it is on
+   * everywhere now so the phone shows the same effect as desktop.
    */
   outline: boolean;
   /**
    * Whether the liquid reveal runs at all after the entrance — the cursor
-   * trail and the idle sweep that stands in for it on touch. Off on a phone
-   * (2026-09-08): the sweep is the one thing in the frame that never rests,
-   * and its warp is two noise fetches plus up to 18 capsule distances per
-   * fragment of the helmet, every frame, for a stroke nobody asked for. The
-   * entrance burn is untouched; after it the helmet has dissolved and the
-   * portrait stands on its own.
+   * trail and the idle sweep that stands in for it on touch. It was off on a
+   * phone (2026-09-08): the sweep never rests, and its warp is two noise
+   * fetches plus up to 18 capsule distances per fragment of the helmet,
+   * every frame. It is back on there, because without it the helmet only
+   * exists for the entrance burn; off only where the scene is frozen
+   * (reduced motion, or a phone in energy saver).
    */
   reveal: boolean;
   /**
@@ -128,11 +128,24 @@ export const getSceneTier = (): SceneTier => {
     // been the cost. The frame is paid for elsewhere: the backdrop's reveal
     // loop no longer runs where it is invisible, and the wireframe is off.
     frameInterval: name === "desktop" ? 0 : CAP_60,
-    pointerEnabled: !coarse && !reducedMotion,
+    // Touch too: a finger on the hero drives the same liquid trail the
+    // cursor does on desktop (pointermove fires for a touch drag until the
+    // browser takes it over as a scroll). The phone used to park the pointer
+    // and rely on the idle sweep alone, which read as a different effect.
+    pointerEnabled: !reducedMotion,
     antialias: name === "desktop",
-    trailSamples: mobile ? 28 : name === "tablet" ? 44 : 72,
-    outline: !mobile,
-    reveal: !mobile,
+    // 44 on a phone as on a tablet, for the same trail length the cursor
+    // leaves on desktop; the DPR cap of 1 keeps the fill cost down.
+    trailSamples: mobile ? 44 : name === "tablet" ? 44 : 72,
+    // The scanning wireframe is part of the effect everywhere now.
+    outline: true,
+    // On everywhere the scene is not frozen. The phone had it off
+    // (2026-09-08, see `SceneTier.reveal`), which left the helmet visible
+    // only for the entrance burn — on a phone the site read as a portrait
+    // with no helmet at all. The sweep runs with the phone's own budget: 28
+    // trail samples, no wireframe, DPR 1, and the broad brush `index.tsx`
+    // sets below 640.
+    reveal: !(reducedMotion || (mobile && saver)),
     freeze: reducedMotion || (mobile && saver),
   };
 };
