@@ -40,7 +40,7 @@ export const Footer = ({ content, className }: FooterProps) => (
     // `min-h-lvh` from `lg`. Below it the block is the figure's own height
     // plus the rows above and below it — a full viewport there is mostly the
     // empty band between the masthead and the helmet.
-    className={`@container relative isolate min-h-[var(--foot-h,100lvh)] w-full overflow-hidden bg-accent max-lg:[--type-min:13px] max-sm:[--foot-gutter:24px] max-sm:[--foot-h:680px] max-sm:[--nav-mid:282px] max-sm:[--cta-bottom:73px] max-sm:[--foot-bottom-min:var(--foot-gutter)] max-sm:[--social-bottom:151px] max-sm:[--social-left:var(--foot-gutter)] max-sm:[--social-right:auto] max-sm:[--social-min-w:auto] max-sm:[--logo-w:106px] max-sm:[--logo-h:24px] max-sm:[--nav-size:30px] max-sm:[--nav-gap:18px] max-sm:[--nav-row:auto] max-sm:[--nav-w:calc(100cqw_-_2*var(--foot-gutter))] max-sm:[--cta-left:var(--foot-gutter)] max-sm:[--cta-w:calc(100cqw_-_2*var(--foot-gutter))] max-sm:[--foot-head-left:var(--foot-gutter)] max-sm:[--foot-head-right:auto] max-sm:[--foot-head-top:78px] max-sm:[--cta-h:50px] max-sm:[--foot-copy-min:212px] max-lg:[--foot-head-min:6.6667cqw] max-sm:[--foot-head-min:40px] max-sm:[--head-w-min:240px] sm:max-lg:[--foot-h:104cqw] sm:max-lg:[--fig-scale:0.87] sm:max-lg:[--fig-shift:3%] sm:max-lg:[--logo-w:106px] sm:max-lg:[--logo-h:24px] sm:max-lg:[--nav-size:36px] sm:max-lg:[--nav-gap:12px] sm:max-lg:[--nav-row:34px] sm:max-lg:[--cta-left:50%] sm:max-lg:[--cta-shift:-50%] sm:max-lg:[--foot-copy-min:200px] sm:max-lg:[--cta-h:50px] max-lg:[--foot-bottom-min:5cqw] max-lg:[--head-min:6.6667cqw] max-lg:[--head-w-min:44cqw] ${className ?? ""}`}
+    className={`@container relative isolate min-h-[var(--foot-h,100lvh)] w-full overflow-hidden bg-accent max-lg:[--type-min:13px] max-sm:[--foot-gutter:24px] max-sm:[--fig-h:400px] max-sm:[--foot-h:1060px] max-sm:[--nav-mid:282px] max-sm:[--cta-bottom:calc(73px_+_var(--fig-h))] max-sm:[--foot-bottom-min:calc(var(--foot-gutter)_+_var(--fig-h))] max-sm:[--social-bottom:calc(151px_+_var(--fig-h))] max-sm:[--social-left:var(--foot-gutter)] max-sm:[--social-right:auto] max-sm:[--social-min-w:auto] max-sm:[--logo-w:106px] max-sm:[--logo-h:24px] max-sm:[--nav-size:30px] max-sm:[--nav-gap:18px] max-sm:[--nav-row:auto] max-sm:[--nav-w:calc(100cqw_-_2*var(--foot-gutter))] max-sm:[--cta-left:var(--foot-gutter)] max-sm:[--cta-w:calc(100cqw_-_2*var(--foot-gutter))] max-sm:[--foot-head-left:var(--foot-gutter)] max-sm:[--foot-head-right:auto] max-sm:[--foot-head-top:78px] max-sm:[--cta-h:50px] max-sm:[--foot-copy-min:212px] max-lg:[--foot-head-min:6.6667cqw] max-sm:[--foot-head-min:40px] max-sm:[--head-w-min:240px] sm:max-lg:[--foot-h:104cqw] sm:max-lg:[--fig-scale:0.87] sm:max-lg:[--fig-shift:3%] sm:max-lg:[--logo-w:106px] sm:max-lg:[--logo-h:24px] sm:max-lg:[--nav-size:36px] sm:max-lg:[--nav-gap:12px] sm:max-lg:[--nav-row:34px] sm:max-lg:[--cta-left:50%] sm:max-lg:[--cta-shift:-50%] sm:max-lg:[--foot-copy-min:200px] sm:max-lg:[--cta-h:50px] max-lg:[--foot-bottom-min:5cqw] max-lg:[--head-min:6.6667cqw] max-lg:[--head-w-min:44cqw] ${className ?? ""}`}
   >
     <div
       className="absolute overflow-hidden bg-surface-black text-foreground-on-dark"
@@ -61,10 +61,14 @@ export const Footer = ({ content, className }: FooterProps) => (
           the right with it: the group is pinned between the masthead above
           its crown and the nav column beside its cheek, and moving it off
           the block's middle is what buys the last of the size. */}
-    {/* **Not on the phone.** The block there is a list — brand, five ways
-          out, the legal row — and the helmet under it was a second screen of
-          scrolling for an image the page has already shown three times. */}
-    <div className="pointer-events-none absolute inset-0 z-10 origin-bottom max-sm:hidden [scale:var(--fig-scale,1)] [translate:var(--fig-shift,0)]">
+    {/* **On the phone it closes the block.** The template hid it there — the
+          block is a list, and the figure was a second screen of scrolling —
+          but it is the sign-off, so it comes back *under* the list: the group
+          keeps the design's own 1440:800 frame, `--fig-h` tall, centred and
+          cropped by the section, hanging off the foot as it does on desktop.
+          The section grows by `--fig-h`, and the rows anchored to the foot
+          (copyright, legal CTA, socials) rise by the same amount. */}
+    <div className="pointer-events-none absolute inset-0 z-10 origin-bottom max-sm:top-auto max-sm:right-auto max-sm:bottom-0 max-sm:left-1/2 max-sm:h-[var(--fig-h)] max-sm:w-[calc(var(--fig-h)*1.8)] max-sm:[--fig-shift:-50%_0] [scale:var(--fig-scale,1)] [translate:var(--fig-shift,0)]">
       {/* Scroll parallax, over the pair together — see `PARALLAX_FIGURE` for
           why the window closes at `bottom bottom` rather than on a crossing,
           why the displacement is downward, and why the helmet does not get a
