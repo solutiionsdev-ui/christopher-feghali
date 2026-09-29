@@ -7,9 +7,9 @@
 import { publicEnv } from "@/env";
 
 export const siteConfig = {
-  name: "Kimi Antonelli — GRIDO1 Racing Systems",
+  name: "Christopher Feghali — Lebanese Racing Driver",
   description:
-    "Driver_012. Kimi Antonelli, rookie season 2026 with the Mercedes-AMG F1 Team. Next race: Belgian GP, Spa-Francorchamps.",
+    "Christopher Feghali — Lebanese racing driver, 2022 Mini MAX World Champion and Red Bull athlete, racing the 2026 Eurocup-3 season with Drivex.",
   /**
    * Public origin, no trailing slash. Drives canonical URLs, OG tags, the
    * sitemap, and JSON-LD. Set `NEXT_PUBLIC_SITE_URL` in production.

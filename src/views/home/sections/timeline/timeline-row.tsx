@@ -150,6 +150,8 @@ export const TimelineRow = ({
   index: number;
 }) => {
   const side = entry.frame === "side";
+  /** A side plate on the right puts its copy left of the rail. */
+  const mirrored = side && entry.align === "right";
   /**
    * The row's own entrance runs when the row **arrives**, not when the page
    * mounts. `Spring` and `TextEngine` both take a plain boolean, and every
@@ -326,10 +328,17 @@ export const TimelineRow = ({
           // The year above it was lifted onto the photograph with a negative
           // margin; this gives the same amount back, so the copy stays where
           // it was and only the year moved.
-          className="pointer-events-none absolute top-1/2 z-20 -translate-y-1/2 uppercase leading-display text-foreground-on-dark max-sm:static max-sm:w-full max-sm:translate-y-0"
+          className={`pointer-events-none absolute top-1/2 z-20 -translate-y-1/2 uppercase leading-display text-foreground-on-dark max-sm:static max-sm:w-full max-sm:translate-y-0 ${
+            mirrored ? "text-right max-sm:text-left" : ""
+          }`}
           style={
             {
-              left: px(COPY_LEFT),
+              // A side row's copy goes on the far side of the rail from its
+              // plate, as far out as a centre row's copy sits — so the rows
+              // zig-zag across the rail and the year, centred on it, keeps
+              // clear of both. Mirrored for a plate on the right, and set
+              // flush to the rail there.
+              ...(mirrored ? { right: px(COPY_LEFT) } : { left: px(COPY_LEFT) }),
               // Widened below `lg` through the same `max()` route as the type
               // above — the frame's 284 is 151 real pixels at 768, and the
               // copy broke into six short lines. 200 is what is left between

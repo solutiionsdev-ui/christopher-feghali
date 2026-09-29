@@ -80,7 +80,11 @@ export const Footer = ({ content, className }: FooterProps) => (
         innerClassName="relative block size-full"
       >
         <Image
-          src="/assets/footer/body.webp"
+          // Christopher's suit, raised 135 source px against Kimi's plate:
+          // his neck is longer, and at Kimi's height the chin showed between
+          // the helmet and the collar. Rebuilt from the hero's `person.png`
+          // cut-out so the extra rows at the foot are real suit, not padding.
+          src="/assets/footer/body-christopher.webp"
           alt=""
           width={1536}
           height={1024}
@@ -106,7 +110,7 @@ export const Footer = ({ content, className }: FooterProps) => (
         />
         <Image
           src="/assets/footer/helmet.webp"
-          alt="Kimi Antonelli's helmet"
+          alt="Christopher Feghali's helmet"
           width={1536}
           height={1024}
           priority={false}

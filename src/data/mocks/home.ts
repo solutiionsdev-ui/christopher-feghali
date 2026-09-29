@@ -108,7 +108,8 @@ export interface HomeContent {
      * Top to bottom. `side` frames sit in the gutter and alternate left and
      * right; `centre` frames straddle the rail. The updated frame opens and
      * closes on a `centre` row — four of them, with three `side` rows between:
-     * 169 + 4x462 + 3x217 + 32 is the frame's 2700 exactly.
+     * 169 + 4x462 + 3x217 + 32 is the frame's 2700 exactly. The count is not
+     * fixed — the rail and its resting point are measured off the entries.
      */
     entries: TimelineEntry[];
   };
@@ -144,7 +145,10 @@ export interface TimelineEntry {
   frame: "side" | "centre";
   /** Set on `side` rows only — `centre` rows always straddle the rail. */
   align?: "left" | "right";
-  /** Lead sentence, set bold, then the rest. `centre` rows only. */
+  /**
+   * Lead sentence, set bold, then the rest. `centre` rows set it beside their
+   * plate; `side` rows on the far side of the rail from theirs.
+   */
   copyLead?: string;
   copy?: string;
   /** The design measures the copy column per row. */
@@ -174,49 +178,49 @@ export const homeContent: HomeContent = {
     ],
     garage: { label: "Garage", href: "/garage" },
     driver: {
-      id: "driver_012",
-      firstName: "kimi",
-      lastName: "antonelli",
-      tagline: "Mercedes-AMG F1 Team rookie, 2026 season",
+      id: "driver_017",
+      firstName: "christopher",
+      lastName: "feghali",
+      tagline: "Lebanese racing driver, Red Bull athlete, Drivex Eurocup-3 2026 season",
       portrait: "/assets/hero/scene/person-diffuse.webp",
       meta: [
         {
-          icon: `${UI}/flag-italy.webp`,
-          iconAlt: "Italy",
+          icon: `${UI}/flag-lebanon.webp`,
+          iconAlt: "Lebanon",
           iconWidth: 18,
           iconHeight: 12,
-          label: "Italy",
+          label: "Lebanon",
         },
         {
           icon: `${UI}/icon-rookie.svg`,
           iconAlt: "",
           iconWidth: 16,
           iconHeight: 16,
-          label: "rookie season_2026",
+          label: "eurocup-3 season_2026",
         },
         {
-          icon: `${UI}/mercedes-logo.webp`,
+          icon: `${UI}/icon-drivex.svg`,
           iconAlt: "",
           iconWidth: 14,
           iconHeight: 14,
-          label: "Mercedes-AMG F1 Team",
+          label: "Drivex · Red Bull athlete",
         },
       ],
     },
     nextRace: {
       eyebrow: "next race",
-      name: "belgian gp",
-      circuit: "spa-francorchamps",
-      date: "27 jul 2026",
-      map: `${UI}/circuit-spa.webp`,
-      mapAlt: "Spa-Francorchamps circuit layout",
+      name: "round 06 · jerez",
+      circuit: "circuito de jerez",
+      date: "25–27 sep 2026",
+      map: `${UI}/circuit-jerez.webp`,
+      mapAlt: "Circuito de Jerez – Ángel Nieto circuit layout",
     },
     season: {
-      eyebrow: "Season stats",
+      eyebrow: "Career stats",
       stats: [
-        { label: "Races", value: "12" },
-        { label: "Podiums", value: "3" },
-        { label: "Points", value: "118" },
+        { label: "Titles", value: "8×" },
+        { label: "World", value: "1" },
+        { label: "Followers", value: "53K" },
       ],
     },
     trailer: {
@@ -224,9 +228,9 @@ export const homeContent: HomeContent = {
       duration: "01:26",
       href: "/trailer",
     },
-    profile: { label: "view profile", href: "/driver/kimi-antonelli" },
+    profile: { label: "view profile", href: "/driver/christopher-feghali" },
     socials: [
-      { label: "inst", href: "https://instagram.com" },
+      { label: "inst", href: "https://instagram.com/christopherfeghali" },
       { label: "x", href: "https://x.com" },
       { label: "youtube", href: "https://youtube.com" },
     ],
@@ -288,64 +292,85 @@ export const homeContent: HomeContent = {
     ],
   },
   timeline: {
-    headline: ["from karts", "to f1"],
+    // Christopher's own line — the "Road to Formula 1" chapter on
+    // christopherfeghali.racing. The about page's "Ten years. One trajectory."
+    // runs past the right edge at this size: "trajectory" alone is the width
+    // the heading has.
+    headline: ["road to", "formula 1"],
+    // Career timeline from christopherfeghali.racing/about ("02 / Career") and
+    // its honours list. Every row carries copy: side rows set it on the far
+    // side of the rail from their photograph (see `timeline-row.tsx`).
+    // The two karting photographs are VroomKart's from the 2022 RMC Grand
+    // Finals in Portimão (vroomkart.com/news/42839) — press images, to be
+    // cleared with the photographer or swapped for the team's own. The Red
+    // Bull portrait is Red Bull's own 2026 driver portrait (redbull.com
+    // junior team profile).
     entries: [
       {
-        year: "2012",
+        year: "2018",
         frame: "centre",
-        copyLead: "The first kart.",
-        copy: "At six, Kimi discovered karting — turning a childhood curiosity into something of his own.",
-        copyWidth: 228,
-        image: "/assets/timeline/2012.webp",
-        alt: "Kimi in kart overalls in the paddock, aged six",
+        copyLead: "Lebanese kart champion ×8.",
+        copy: "Eight national titles between 2018 and 2022 — and three MENA Cup region championships.",
+        copyWidth: 262,
+        image: "/assets/timeline/2018-karting.webp",
+        alt: "Christopher in his Team Lebanon karting suit, pointing a finger up for number one",
       },
       {
-        year: "2015",
+        year: "2022",
         frame: "side",
         align: "right",
-        image: "/assets/timeline/2015.webp",
-        alt: "Kimi holding a karting trophy at sunset",
-      },
-      {
-        year: "2019",
-        frame: "centre",
-        copyLead: "Finding his people.",
-        copy: "Kimi joined the Mercedes Junior Programme, marking his first major step into professional motorsport.",
-        copyWidth: 272,
-        image: "/assets/timeline/2019.webp",
-        alt: "Kimi signing with the Mercedes junior team",
-      },
-      {
-        year: "2021",
-        frame: "side",
-        align: "left",
-        image: "/assets/timeline/2021.webp",
-        alt: "Kimi beside a single-seater in the garage",
+        copyLead: "Rotax world champion.",
+        copy: "Crowned Mini MAX World Champion — a first for Lebanon.",
+        copyWidth: 240,
+        image: "/assets/timeline/2022-world-champion.webp",
+        alt: "Christopher on the top step of the Rotax Mini MAX podium at the 2022 Grand Finals, under the Lebanese flag",
       },
       {
         year: "2024",
         frame: "centre",
-        copyLead: "The year everything changed.",
-        copy: "Formula 2 brought Kimi closer to F1, while Mercedes confirmed him as their future race driver.",
-        copyWidth: 278,
-        image: "/assets/timeline/2024.webp",
-        alt: "Kimi walking the pit lane in Mercedes kit",
+        copyLead: "Single-seater debut.",
+        copy: "Made the jump to single-seaters with Drivex in the Spanish F4 Championship.",
+        copyWidth: 262,
+        image: "/assets/timeline/2024-f4.webp",
+        alt: "Christopher's Drivex single-seater cresting a kerb",
+      },
+      {
+        year: "2024",
+        frame: "side",
+        align: "left",
+        copyLead: "Red Bull athlete.",
+        copy: "Signed as a Red Bull athlete — one of the most prestigious driver development programmes in motorsport.",
+        copyWidth: 250,
+        image: "/assets/timeline/2024-red-bull-portrait.webp",
+        alt: "Christopher in his Red Bull race suit",
+      },
+      {
+        year: "2025",
+        frame: "centre",
+        copyLead: "Eurocup-3 with Drivex.",
+        copy: "A full Eurocup-3 season — the direct stepping stone to FIA Formula 3.",
+        copyWidth: 262,
+        image: "/assets/timeline/2025-eurocup3.webp",
+        alt: "Christopher's Drivex car on track at Aragón",
       },
       {
         year: "2025",
         frame: "side",
         align: "right",
-        image: "/assets/timeline/2025.webp",
-        alt: "Kimi in the Mercedes garage",
+        copyLead: "Race winner.",
+        copy: "A Eurocup-3 sprint race win in his first season in the championship.",
+        copyWidth: 240,
+        image: "/assets/timeline/2025-win.webp",
+        alt: "Christopher on the podium",
       },
       {
         year: "2026",
         frame: "centre",
-        copyLead: "From karts to f1.",
-        copy: "Kimi is now racing at the highest level, with Bologna still his anchor — family, home and life beyond racing.",
-        copyWidth: 284,
-        image: "/assets/timeline/2026.webp",
-        alt: "The Mercedes-AMG F1 car on track",
+        copyLead: "The mission continues.",
+        copy: "A second Eurocup-3 campaign. Eight rounds. Eight F1 circuits. One target.",
+        copyWidth: 262,
+        image: "/assets/timeline/2026-season-v2.webp",
+        alt: "Christopher's car cresting a hill against the sky",
       },
     ],
   },

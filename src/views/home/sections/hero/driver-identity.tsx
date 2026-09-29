@@ -30,9 +30,9 @@ const WORD_IN = { opacity: 1, y: "0em" };
 
 /**
  * The left rail: driver number, the name set in the condensed display face,
- * and the flag / season / team rows. The number is pinned beside the first
- * headline word from `xl` up (Figma 915:203) and falls back to an eyebrow
- * above the headline on narrow screens, where there is no room beside it.
+ * and the flag / season / team rows. The number sits as an eyebrow above the
+ * headline at every size — the design pinned it beside the first word, which
+ * only clears a short first name ("CHRISTOPHER" runs underneath it).
  *
  * The headline reveals word by word through `TextEngine` — it is the one
  * piece of type on the page big enough for the per-word stagger to register,
@@ -59,7 +59,7 @@ export const DriverIdentity = ({
         to={FADE_TO}
         config={REVEAL_CONFIG}
         delayIn={delay}
-        className="mb-4 text-label uppercase leading-flat text-foreground-muted short:mb-1 xl:absolute xl:left-[20.0625rem] xl:top-[0.5625rem] xl:mb-0"
+        className="mb-4 text-label uppercase leading-flat text-foreground-muted short:mb-1"
       >
         {driver.id}
       </Spring>

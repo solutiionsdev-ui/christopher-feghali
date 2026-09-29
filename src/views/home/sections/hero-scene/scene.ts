@@ -1683,12 +1683,17 @@ export class HeroScene {
         loadTexture("person-alpha.webp"),
         loadTexture("person-normal.webp"),
       ]),
-      // helmet3.glb ships its own baked PBR set — base colour, normal and
+      // The helmet ships its own baked PBR set — base colour, normal and
       // metallic-roughness painted into the model's own UV layout, embedded
       // as WebP. That is exactly the input ADR-0022 said the old helmet had
       // never been given, so there is no external livery atlas to load any
       // more: the shell keeps the material the GLB arrives with. See ADR-0027.
-      gltfLoader.loadAsync(`${ASSETS}/helmet3.glb`),
+      // helmet-christopher.glb is Christopher's Red Bull / Drivex Bell helmet,
+      // generated from the front product shot (Tripo H3.1), cut to the same
+      // ~38k-triangle, 2048² WebP, Draco budget as helmet3.glb and turned to
+      // face +Z. Only the front is faithful to the photo — the hero never
+      // turns it more than a few degrees, so the back is never seen.
+      gltfLoader.loadAsync(`${ASSETS}/helmet-christopher.glb`),
       // Not a helmet map — the shared reveal/burn noise, read by both the
       // helmet mask and the backdrop's copy of it.
       loadTexture("noise.webp"),

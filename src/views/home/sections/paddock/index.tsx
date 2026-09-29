@@ -138,8 +138,11 @@ export const Paddock = ({ content, className }: PaddockProps) => (
       innerClassName="relative block size-full"
     >
       <Image
-        src="/assets/paddock/portrait.webp"
-        alt="Kimi Antonelli in the paddock"
+        // Christopher's profile, cut out and seated on Kimi's canvas: same
+        // 1350x1165, nose tip on the same point and the head at the same
+        // scale (1.025), so the design's crop and the parallax still land.
+        src="/assets/paddock/portrait-christopher.webp"
+        alt="Christopher Feghali in profile, in his Red Bull and Drivex race suit"
         width={1350}
         height={1165}
         priority
