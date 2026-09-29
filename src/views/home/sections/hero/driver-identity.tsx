@@ -86,7 +86,11 @@ export const DriverIdentity = ({
         // pinned at 16 and the name was running into the figure. A portrait
         // 768 has the width for it and needs the weight — the masthead is the
         // whole left half of that screen.
-        className="max-w-[6em] justify-start text-left font-display font-bold uppercase leading-headline text-display-lg text-foreground short:text-heading md:text-impact lg:text-display-lg xl:text-impact"
+        // Below `sm` the size is also capped at 14vw: "CHRISTOPHER" sets
+        // 5.84em wide, so at the display size's 70 it measured 409 against
+        // the 355 a 403px phone has inside its gutters. 14vw leaves it room
+        // on every phone from 320 up.
+        className="max-w-[6em] justify-start text-left font-display font-bold uppercase leading-headline text-display-lg text-foreground max-sm:text-[length:min(var(--text-display-lg),14vw)] short:text-heading md:text-impact lg:text-display-lg xl:text-impact"
       >
         {`${driver.firstName} ${driver.lastName}`}
       </TextEngine>

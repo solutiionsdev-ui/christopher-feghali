@@ -205,9 +205,9 @@ export const HeroSceneCanvas = ({
       // a fixed point where there is no pointer, so the grey wash it paints
       // never moves and reads as a blob behind the figure. 767 left it on at
       // 768, which is exactly where it was reported.
-      ...(window.matchMedia("(max-width: 1023px)").matches
-        ? { bgRevealOpacity: 0 }
-        : null),
+      // No longer applied: touch now drives the reveal like a cursor, so the
+      // grey half of it follows the finger instead of sitting parked, and
+      // the phone shows the same two-tone reveal as desktop.
       // And where there is no pointer at all, the reveal is **driven for the
       // reader**: the idle sweep is a second, synthetic cursor, switched off
       // on desktop because a real one is there. On a touch screen it is the
@@ -224,9 +224,10 @@ export const HeroSceneCanvas = ({
       // under a real cursor, where the pointer wanders over the whole face
       // rather than crossing it once. The path shortens with it, since a
       // broad brush no longer needs to travel to cover the head.
-      ...(window.matchMedia("(max-width: 639px)").matches
-        ? { sweepRadius: 0.95, sweepWarp: 0.18, autoSweepAmount: 0.55 }
-        : null),
+      // The phone used to widen this brush to 0.95 with little warp, which
+      // revealed the helmet as one soft mass — not the liquid trail desktop
+      // shows. It keeps the desktop brush now; at a phone's aspect 0.33 of
+      // the half-height is about as many real pixels as on a 1440 screen.
       // Last, because it overrides the two above: on a tier with the reveal
       // switched off the sweep does not run at all. The entrance burn still
       // plays; after it the helmet has dissolved and stays dissolved. See
@@ -279,7 +280,9 @@ export const HeroSceneCanvas = ({
    * The pointer listener, attached and detached to follow the tier rather
    * than fixed at mount — a tier that gains a cursor mid-session (see the
    * resize effect) needs the listener it was never given. Not attached at all
-   * on a touch tier, not "attached and ignored" (optimize-3d-scene §11).
+   * where the tier has no pointer (reduced motion), not "attached and ignored"
+   * (optimize-3d-scene §11). Touch tiers get it too: a finger drives the
+   * trail as the cursor does on desktop.
    */
   const removePointerRef = useRef<(() => void) | null>(null);
   const bindPointer = (enabled: boolean) => {
@@ -293,9 +296,26 @@ export const HeroSceneCanvas = ({
         (event.clientY / window.innerHeight) * 2 - 1,
       );
     };
+    // Touch events as well as pointer events: once a drag becomes a scroll
+    // the browser sends `pointercancel` and no more `pointermove`, so the
+    // trail froze the moment the page started to move. `touchmove` keeps
+    // reporting the finger through the scroll, so the helmet follows it.
+    const onTouch = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (!touch) return;
+      scene.setPointer(
+        (touch.clientX / window.innerWidth) * 2 - 1,
+        (touch.clientY / window.innerHeight) * 2 - 1,
+      );
+    };
     window.addEventListener("pointermove", onPointerMove, { passive: true });
-    removePointerRef.current = () =>
+    window.addEventListener("touchstart", onTouch, { passive: true });
+    window.addEventListener("touchmove", onTouch, { passive: true });
+    removePointerRef.current = () => {
       window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("touchstart", onTouch);
+      window.removeEventListener("touchmove", onTouch);
+    };
   };
 
   useEffect(() => {
